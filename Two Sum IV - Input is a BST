@@ -1,0 +1,18 @@
+Time: O(n), Space: O(n)
+2 other solutions- 1) Do BFS and unordered_set
+                   2) Do inorder traversal and store it in an array and then do 2 pointer search.
+
+Solution: (Using unorederd_set) - This is better as it does work in traversal, same goes with option no. 1
+
+class Solution {
+    unordered_set<int> s;
+public:
+    bool findTarget(TreeNode* root, int k) {
+        if(root == NULL)
+            return false;
+        if(s.find(k-root->val) != s.end())
+            return true;
+        s.insert(root->val);
+        return findTarget(root->left, k) or findTarget(root->right, k);
+    }
+};
