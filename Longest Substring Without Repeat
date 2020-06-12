@@ -1,0 +1,48 @@
+Time: O(2*n), Space: O(n)
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int n = s.size();
+        if(n == 0)
+            return 0;
+        if(n == 1)
+            return 1;
+        unordered_set<char> st;
+        st.insert(s[0]);
+        int j = 0, res = 0;
+        for(int i = 1 ; i < n ; ){
+            if(st.find(s[i]) == st.end()){
+                st.insert(s[i++]);
+                res = max(res, (int)st.size());
+            }
+            else{
+                st.erase(s[j]);
+                j++;
+            }
+        }
+        return res;
+    }
+};
+-----------------------------------------------------------------------------------------------------------------
+Time: O(n), Space: O(n)
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int n = s.size();
+        if(n == 0)
+            return 0;
+        if(n == 1)
+            return 1;
+        unordered_map<char, int> m;
+        int j = 0, res = 0;
+        for(int i = 0 ; i < n ; i++){
+            if(m.find(s[i]) != m.end())
+                j = max(j, m[s[i]]);
+            res = max(res, i+1-j);
+            m[s[i]] = i+1;
+        }
+        return res;
+    }
+};
