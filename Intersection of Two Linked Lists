@@ -1,0 +1,50 @@
+Time: O(n), Space: O(1)
+
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        ListNode* currA = headA;
+        ListNode* currB = headB;
+        int nA = 0, nB = 0;
+        while(currA or currB){
+            if(currA){
+                currA = currA->next;
+                nA++;
+            }
+            if(currB){
+                currB = currB->next;
+                nB++;
+            }
+        }
+        int diff = abs(nA-nB);
+        currA = headA;
+        currB = headB;
+        if(nA > nB){
+            int counter = 0;
+            while(counter != diff){
+                currA = currA->next;
+                counter++;
+            }
+            while(currA and currB){
+                if(currA == currB)
+                    return currA;
+                currA = currA->next;
+                currB = currB->next;
+            }
+        }
+        else{
+            int counter = 0;
+            while(counter != diff){
+                currB = currB->next;
+                counter++;
+            }
+            while(currA and currB){
+                if(currA == currB)
+                    return currB;
+                currA = currA->next;
+                currB = currB->next;
+            }
+        }
+        return NULL;
+    }
+};
