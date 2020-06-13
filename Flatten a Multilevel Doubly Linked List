@@ -1,0 +1,28 @@
+Time: O(n)(where 'n' is all nodes present in the list), space: O(n)(for recursive call stack)
+
+class Solution {
+public:
+    Node* getTail(Node* head){
+        while(head->next)
+            head = head->next;
+        return head;
+    }
+    Node* flatten(Node* head) {
+        if(head == NULL)
+            return head;
+        Node* curr = head;
+        while(curr){
+            if(curr->child){
+                Node* tail = getTail(curr->child);
+                tail->next = curr->next;
+                if(curr->next)
+                    curr->next->prev = tail;
+                curr->next = curr->child;
+                curr->next->prev = curr;
+                curr->child = NULL;
+            }
+            curr = curr->next;
+        }
+        return head;
+    }
+};
