@@ -1,0 +1,42 @@
+Time: O(n), Space: O(1)
+
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        if(!head or !(head->next))
+            return head;
+        int n = 0;
+        
+        bool firstPass = true;
+        ListNode* curr = head, *prev = NULL, *first, *prevFirst;
+        while(curr){
+            curr = curr->next;
+            n++;
+        }
+        curr = head;
+        while(curr  and k <= n){
+            int i = 0;
+            prev = NULL;
+            first = curr;
+            while(curr and i < k){
+                ListNode* temp = curr->next;
+                curr->next = prev;
+                prev = curr;
+                curr = temp;
+                i++;
+            }
+            n -= k;
+            if(firstPass){
+                firstPass = false;
+                head = prev;
+            }
+            else
+                prevFirst->next = prev;
+            prevFirst = first;
+            if(n < k)
+                prevFirst->next = curr;
+        }
+        
+        return head;
+    }
+};
