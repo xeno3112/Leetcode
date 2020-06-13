@@ -1,0 +1,46 @@
+Time: O(n), Space:O(n)(for reversal recursive stack)
+
+class Solution {
+public:
+    ListNode* rev(ListNode *head){
+        if(head == NULL or head->next == NULL)
+            return head;
+        ListNode* newHead = rev(head->next);
+        head->next->next = head;
+        head->next = NULL;
+        return newHead;
+    }
+    bool isPalindrome(ListNode* head) {
+        if(head == NULL or head->next == NULL)
+            return true;
+        ListNode* slow = head;
+        ListNode* fast = head;
+        while(fast and fast->next){
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        if(fast){
+            slow = slow->next;
+            slow = rev(slow);
+            fast = head;
+            while(slow){
+                if(slow->val != fast->val)
+                    return false;
+                slow = slow->next;
+                fast = fast->next;
+            }
+        }
+        else{
+            slow = rev(slow);
+            fast = head;
+            while(slow){
+                if(slow->val != fast->val)
+                    return false;
+                slow = slow->next;
+                fast = fast->next;
+            }
+        }
+        return true;
+            
+    }
+};
