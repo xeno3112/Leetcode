@@ -1,0 +1,16 @@
+Time: O(n), Space: O(h)(recursive call stack)
+('h' is height of the BST)
+
+class Solution {
+public:
+    TreeNode* searchBST(TreeNode* root, int val) {
+        if(!root)
+            return NULL;
+        if(root->val == val)
+            return root;
+        if(root->val < val)
+            return searchBST(root->right, val);
+        else
+            return searchBST(root->left, val);
+    }
+};
