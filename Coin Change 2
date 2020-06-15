@@ -1,0 +1,18 @@
+Time:O(n),  Space: O(n)
+
+class Solution {
+public:
+    int change(int sum, vector<int>& coins) {
+        int n = coins.size();
+        int ways[sum + 1];
+        memset(ways, 0, sizeof(ways));
+        ways[0] = 1;
+        for(int j = 0 ; j < n ; j++){
+            for(int i = 1 ; i <= sum ; i++){
+                if(i >= coins[j])
+                    ways[i] += ways[i - coins[j]];
+            }
+        }
+        return ways[sum];
+    }
+};
