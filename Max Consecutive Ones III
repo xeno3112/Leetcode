@@ -1,0 +1,22 @@
+Time: O(n), Space: O(1)
+
+class Solution {
+public:
+    int longestOnes(vector<int>& A, int K) {
+        int n = A.size();
+        if(n == 0)
+            return 0;
+        int counter = 0, res = 0, i = 0;
+        for(int j = 0 ; j < n ; j++){
+            if(A[j] == 0)
+                counter++;
+            while(counter > K){
+                if(A[i] == 0)
+                    counter--;
+                i++;
+            }
+            res = max(res, 1+j-i);
+        }
+        return res;
+    }
+};
