@@ -1,0 +1,53 @@
+Time: O(9^n)('n' is number of blanks, '9' is number of possibilities)
+Space: O() ???(recursive stack space)
+
+class Solution {
+public:
+    bool isSafe(int x, int y, char c, vector<vector<char>>& board){
+        for(int i = 0 ; i < 9 ; i++){
+            if(board[i][y] == c or board[x][i] == c)
+                return false;
+        }
+        x = x - x % 3;
+        y = y - y % 3;
+        for(int i = 0 ; i < 3 ; i++){
+            for(int j = 0 ; j < 3 ; j++){
+                if(board[i+x][j+y] == c)
+                    return false;
+            }
+        }
+        return true;
+    }
+    
+    bool solve(vector<vector<char>>& board){
+        int i, j;
+        for(i = 0 ; i < 9 ; i++){
+            bool flag = false;
+            for(j = 0 ; j < 9 ; j++){
+                if(board[i][j] == '.'){
+                    flag = true;
+                    break;
+                }
+            }
+            if(flag)
+                break;
+        }
+        if(i == 9 and j == 9)
+            return true;
+        for(int k = 1 ; k <= 9 ; k++){
+            char c = '0' + k;
+            if(isSafe(i, j, c, board)){
+                board[i][j] = c;
+                if(solve(board))
+                    return true;
+                board[i][j] = '.';
+            }
+        }
+        return false;
+    }
+    
+    void solveSudoku(vector<vector<char>>& board) {
+        solve(board);
+        return;
+    }
+};
