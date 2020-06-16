@@ -1,0 +1,54 @@
+Time: O(n!)(As we search for each and every arrangement),  Space: O()?????
+
+class Solution {
+public:
+    vector<vector<string>> res;
+    bool isSafe(int x, int y, vector<string> &v){
+        int n = v.size();
+        for(int i = 0 ; i < y ; i++)
+            if(v[x][i] == 'Q')
+                return false;
+        
+        int i = x-1, j = y-1;
+        while(i >= 0 and j >= 0){
+            if(v[i][j] == 'Q')
+                return false;
+            i--;
+            j--;
+        }
+        i = x+1, j = y-1;
+        while(i < n and j >= 0){
+            if(v[i][j] == 'Q')
+                return false;
+            i++;
+            j--;
+        }
+        return true;
+    }
+    void solve(int n, int i, vector<string> &v){
+        if(i == n){
+            res.push_back(v);
+            return;
+        }
+        for(int j = 0 ; j < n ; j++){
+            if(isSafe(j, i, v)){
+                v[j][i] = 'Q';
+                solve(n, i+1, v);
+                v[j][i] = '.';
+            }
+        }
+    }
+    vector<vector<string>> solveNQueens(int n) {
+        if(n == 0)
+            return res;
+            
+        vector<string> v(n, string(n,'.'));
+        if(n == 1){
+            v[0][0] = 'Q';
+            res.push_back(v);
+            return res;
+        }
+        solve(n, 0, v);
+        return res;
+    }
+};
