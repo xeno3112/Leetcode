@@ -1,0 +1,46 @@
+Time: O(m^V)('v' vertex choices for 'm' colors)
+Space: O(V) + (recursive stack)
+
+#include<bits/stdc++.h>
+using namespace std;
+bool check(vector<int> adj[], vector<int> &color, int v, int c){
+    for(int i = 0 ; i < adj[v].size() ; i++){
+        if(color[adj[v][i]] == c)
+            return false;
+    }
+    return true;
+}
+bool possible(vector<int> adj[], vector<int> &color, int n, int v, int M){
+    if(v == n)
+        return true;
+    for(int j = 1 ; j <= M ; j++){
+        if(check(adj, color, v, j)){
+            color[v] = j;
+            if(possible(adj, color, n, v+1, M))
+                return true;
+            color[v] = -1;
+        }
+    }
+    return false;
+}
+int main(){
+    int t;
+    cin >> t;
+    while(t--){
+        int n, M, E;
+        cin >> n >> M >> E;
+        vector<int> adj[n];
+        for(int i = 0 ; i < E ; i++){
+            int s, e;
+            cin >> s >> e;
+            adj[s-1].push_back(e-1);
+            adj[e-1].push_back(s-1);
+        }
+        vector<int> color(n, -1);
+        if(possible(adj, color, n, 0, M))
+            cout << 1;
+        else
+            cout << 0;
+        cout << endl;
+    }
+}
