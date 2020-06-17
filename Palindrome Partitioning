@@ -1,0 +1,42 @@
+Time: O(n^n), Space:O(n)+recursive stack space
+
+class Solution {
+public:
+    vector<vector<string>> ans;
+    vector<string> res;
+    bool palindrome(string s){
+        if(s.size() == 1)
+            return true;
+        int i = 0, j = s.size()-1;
+        while(i < j){
+            if(s[i] != s[j])
+                return false;
+            i++;
+            j--;
+        }
+        return true;
+    }
+    void solve(string s){
+        if(s.size() == 0){
+            ans.push_back(res);
+            return;
+        }
+        string temp = "";
+        for(int i = 0 ; i < s.size() ; i++){
+            temp += s[i];
+            if(palindrome(temp)){
+                res.push_back(temp);
+                solve(s.substr(i+1, s.size()-i+1));
+                res.pop_back();
+            }
+        }
+    }
+    
+    vector<vector<string>> partition(string s) {
+        int n = s.size();
+        if(n == 0)
+            return {};
+        solve(s);
+        return ans;
+    }
+};
