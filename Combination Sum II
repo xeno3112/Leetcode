@@ -1,0 +1,36 @@
+Time: O(2^n), Space: O(n) + recursive call stack
+
+class Solution {
+public:
+    vector<vector<int>> ans;
+    vector<int> res;
+    set<vector<int>> s;
+    void solve(vector<int>& candidates, int i, int target, int n){
+        if(target == 0){
+            if(s.find(res) == s.end())
+                s.insert(res);
+            return;
+        }
+        if(i == n)
+            return;
+        
+        if(candidates[i] <= target){
+            res.push_back(candidates[i]);
+            solve(candidates, i+1, target-candidates[i], n);
+            res.pop_back();
+        }
+        solve(candidates, i+1, target, n);
+    }
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        int n = candidates.size();
+        if(n == 0)
+            return ans;
+        sort(candidates.begin(), candidates.end());
+        if(target < candidates[0])
+            return ans;
+        solve(candidates, 0, target, n);
+        for(auto it = s.begin() ; it != s.end() ; it++)
+            ans.push_back(*it);
+        return ans;
+    }
+};
