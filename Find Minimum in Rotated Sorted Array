@@ -1,0 +1,24 @@
+Time: O(n), Space: O(1)
+
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        int n = nums.size();
+        if(n == 0)
+            return -1;
+        int i = 0, j = n-1, mid;
+        while(i <= j){
+            mid = (i+j)/2;
+            if(mid == n-1 or nums[mid+1] < nums[mid])
+                break;
+            if(nums[mid] < nums[0])
+                j = mid-1;
+            else
+                i = mid+1;
+        }
+        mid++;
+        if(mid == n)
+            return nums[0];
+        return nums[mid];
+    }
+};
