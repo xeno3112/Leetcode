@@ -1,0 +1,24 @@
+Time: O(n), Space:O(n)
+
+class Solution {
+public:
+    string getPermutation(int n, int k) {
+        string res = "";
+        vector<int> temp(n);
+        vector<int> factorial(n+1);
+        factorial[0] = 1;
+        for(int i = 1 ; i <= n ; i++){
+            temp[i-1] = i;
+            factorial[i] = factorial[i-1] * i;
+        }
+        k--;
+        for(int i = 1 ; i <= n ; i++){
+            int index = k/factorial[n-i];
+            res += to_string(temp[index]);
+            auto it = temp.begin()+index;
+            temp.erase(it);
+            k -= index * factorial[n-i];
+        }
+        return res;
+    }
+};
