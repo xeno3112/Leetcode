@@ -1,0 +1,43 @@
+Time: O(n*k), Space: O(n+k)
+
+class Solution {
+public:
+    bool solve(vector<int>& nums, int sum, int row, int k, vector<int> &v){
+        if(row < 0)
+            return true;
+        int temp = nums[row--];
+        for (int i = 0; i < v.size(); i++) {
+            if (v[i] + temp <= sum){
+                v[i] += temp;
+                if (solve(nums, sum, row, k, v)) 
+                    return true;
+                v[i] -= temp;
+            }
+            if (v[i] == 0)
+                break;
+        }
+        return false;
+    }
+    
+    bool canPartitionKSubsets(vector<int>& nums, int k) {
+        int n = nums.size();
+        if(n == 0)
+            return false;
+        int sum = 0;
+        for(int i = 0 ; i < n ; i++)
+            sum += nums[i];
+        if(sum % k != 0)
+            return false;
+        sum /= k;
+        sort(nums.begin(), nums.end());
+        int row = nums.size()-1;
+        if (nums[row] > sum) 
+            return false;
+        while(row >= 0 and nums[row] == sum){
+            row--;
+            k--;
+        }
+        vector<int> v(k);
+        return solve(nums, sum, row, k, v);
+    }
+};
