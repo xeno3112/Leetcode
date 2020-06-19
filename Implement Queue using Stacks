@@ -1,0 +1,42 @@
+Time: O(n), Space: O(n)
+
+class MyQueue {
+    stack<int> s;
+public:
+    void push(int x){
+        s.push(x);
+    }
+    
+    int pop() {
+        stack<int> temp;
+        while(s.size() > 1){
+            temp.push(s.top());
+            s.pop();
+        }
+        int x = s.top();
+        s.pop();
+        while(!temp.empty()){
+            s.push(temp.top());
+            temp.pop();
+        }
+        return x;
+    }
+    
+    int peek() {
+        stack<int> temp;
+        while(s.size() > 1){
+            temp.push(s.top());
+            s.pop();
+        }
+        int x = s.top();
+        while(!temp.empty()){
+            s.push(temp.top());
+            temp.pop();
+        }
+        return x;
+    }
+    
+    bool empty() {
+        return s.empty();
+    }
+};
