@@ -1,0 +1,44 @@
+Time: O(logn), Space: O(1)
+
+class Solution {
+public:
+    Solution(){
+        ios_base::sync_with_stdio(0);
+        cin.tie(0);
+    }
+    int first_pos(vector<int>& nums, int i, int j, int target){
+        while(i <= j){
+            int mid = (i+j)/2;
+            if((mid == 0 or nums[mid-1] < target) and nums[mid] == target)
+                return mid;
+            if(nums[mid] == target or nums[mid] > target)
+                j = mid-1;
+            else
+                i = mid+1;
+        }
+        return -1;
+    }
+    int last_pos(vector<int>& nums, int i, int j, int target){
+        while(i <= j){
+            int mid = (i+j)/2;
+            if((mid == nums.size()-1 or nums[mid+1] > target) and nums[mid] == target)
+                return mid;
+            if(nums[mid] > target)
+                j = mid-1;
+            else
+                i = mid+1;
+        }
+        return -1;
+    }
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int n = nums.size();
+        if(n == 0 or target < nums[0] or target > nums[n-1])
+            return {-1, -1};
+        vector<int> res(2);
+        res[0] = first_pos(nums, 0, n-1, target);
+        if(res[0] == -1)
+            return {-1, -1};
+        res[1] = last_pos(nums, 0 , n-1, target);
+        return res;
+    }
+};
