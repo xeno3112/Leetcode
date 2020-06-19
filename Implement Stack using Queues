@@ -1,0 +1,32 @@
+Time: O(n), Space: O(1)
+
+class MyStack {
+    queue<int> q;
+public:
+    void push(int x) {
+        q.push(x);
+    }
+    
+    int pop() {
+        queue<int> temp;
+        while(q.size() > 1){
+            temp.push(q.front());
+            q.pop();
+        }
+        int x = q.front();
+        q.pop();
+        while(!temp.empty()){
+            q.push(temp.front());
+            temp.pop();
+        }
+        return x;
+    }
+    
+    int top() {
+        return q.back();
+    }
+    
+    bool empty() {
+        return q.empty();
+    }
+};
