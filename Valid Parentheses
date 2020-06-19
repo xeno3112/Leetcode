@@ -1,0 +1,39 @@
+Time: O(n), Space: O(n)
+
+class Solution {
+    stack<int> s;
+public:
+
+    bool match(char a, char b){
+        if(a == '(' and b == ')')
+            return true;
+        if(a == '[' and b == ']')
+            return true;
+        if(a == '{' and b == '}')
+            return true;
+        return false;
+    }
+    
+    bool isValid(string str) {
+        int n = str.size();
+        if(n == 0)
+            return true;
+        if(n == 1)
+            return false;
+        int i = 0;
+        while(i < n){
+            if(str[i] == '(' or str[i] == '{' or str[i] == '[')
+                s.push(str[i]);
+            else{
+                if(!s.empty() and match(s.top(), str[i]))
+                    s.pop();
+                else
+                    return false;
+            }
+            i++;
+        }
+        if(!s.empty())
+            return false;
+        return true;
+    }
+};
