@@ -1,0 +1,33 @@
+Time: O(n) [Each operation takes O(1) time]
+Space: O(n)
+
+class LRUCache {
+    unordered_map<int, pair<int, list<int>::iterator>> m;
+    list<int> cache;
+    int cap;
+public:
+    
+    LRUCache(int capacity) : cap(capacity) {}
+    
+    int get(int key) {
+        if(m.find(key) == m.end())
+            return -1;
+        cache.erase(m[key].second);
+        cache.push_front(key);
+        m[key].second = cache.begin();
+        return m[key].first;
+    }
+    
+    void put(int key, int value) {
+        if(m.find(key) != m.end())
+            cache.erase(m[key].second);
+        else{
+            if(cap == cache.size()){
+                m.erase(cache.back());
+                cache.pop_back();
+            }
+        }
+        cache.push_front(key);
+        m[key] = {value, cache.begin()};
+    }
+};
