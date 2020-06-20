@@ -1,0 +1,51 @@
+Time: O(n*m), Space: O(n+m)
+
+class Solution {
+    int row[4] = {0, 0, -1, 1};
+    int col[4] = {1, -1, 0, 0};
+public:
+    bool check(int x, int y, int n, int m){
+        if((x >= 0) and (x < n) and (y >= 0) and (y < m))
+            return true;
+        return false;
+    }
+    int orangesRotting(vector<vector<int>>& grid) {
+        if(grid.empty())
+            return 0;
+        int n = grid.size();
+        int m = grid[0].size();
+        queue<pair<int, int>> q;
+        for(int i = 0 ; i < n ; i++){
+            for(int j = 0 ; j < m ; j++){
+                if(grid[i][j] == 2)
+                    q.push({i, j});
+            }
+        }
+        int counter = -1;
+        while(!q.empty()){
+            int k = q.size();
+            while(k--){
+                auto p = q.front();
+                q.pop();
+                int x = p.first;
+                int y = p.second;
+                for(int i = 0 ; i < 4 ; i++){
+                    if(check(row[i]+x, col[i]+y, n, m) and grid[row[i]+x][col[i]+y] == 1){
+                        grid[row[i]+x][col[i]+y] = 2;
+                        q.push({row[i]+x, col[i]+y});
+                    }
+                }
+            }
+            counter++;
+        }
+        for(int i = 0 ; i < n ; i++){
+            for(int j = 0 ; j < m ; j++){
+                if(grid[i][j] == 1)
+                    return -1;
+            }
+        }
+        if(counter == -1)
+            return 0;
+        return counter;
+    }
+};
