@@ -1,0 +1,26 @@
+Time: O(n), Space: O(n)
+
+class Solution {
+public:
+    string shortestPalindrome(string s){
+        int n = s.size();
+        string rev(s);
+        reverse(rev.begin(), rev.end());
+        string s_new = s + "#" + rev;
+        int n_new = s_new.size(), len = 0;
+        vector<int> f(n_new, 0);
+        for (int i = 1 ; i < n_new ; ) {
+            if(s_new[i] == s_new[len]){
+                len++;
+                f[i++] = len;
+            }
+            else{
+                if(len == 0)
+                    f[i++] = 0;
+                else
+                    len = f[len-1];
+            }
+        }
+        return rev.substr(0, n - f[n_new - 1]) + s;
+    }
+};
