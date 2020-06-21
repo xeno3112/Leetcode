@@ -1,0 +1,91 @@
+KMP ALGORITHM:-
+Time: O(n), Space: O(m)
+
+class Solution {
+public:
+    void helper(string s, int lps[], int n){
+        lps[0] = 0;
+        int len = 0;
+        for(int i = 1 ; i < n ; ){
+            if(s[i] == s[len]){
+                len++;
+                lps[i++] = len;
+            }
+            else{
+                if(len == 0)
+                    lps[i++] = 0;
+                else
+                    len = lps[len-1];
+            }
+        }
+    }
+    int strStr(string haystack, string needle) {
+        int n = haystack.size() ;
+        int m = needle.size();
+        if(n == 0 and m == 0)
+            return 0;
+        if(n == 0 or n < m)
+            return -1;
+        if(m == 0)
+            return 0;
+        int lps[n];
+        helper(needle, lps, m);
+        int i = 0, j = 0;
+        while(i < n){
+            if(haystack[i] == needle[j]){
+                i++;
+                j++;
+            }
+            if(j == m)
+                return (i-j);
+            else if(i < n and haystack[i] != needle[j]){
+                if(j == 0)
+                    i++;
+                else
+                    j = lps[j-1];
+            }
+        }
+        return -1;
+    }
+};
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+RABIN-KARP ALGORITHM:-
+
+Time: O(n-m)*n, Space: O(1)
+
+class Solution {
+    int q = 100000007;
+    int d = 26;
+public:
+    int strStr(string haystack, string needle) {
+        int n = haystack.size(), m = needle.size();
+        if((n == 0 and m == 0) or (m == 0))
+            return 0;
+        if(n < m)
+            return -1;
+        long long t = 0, p = 0, h = 1;
+        for(int i = 1 ; i < m ; i++)
+            h = (h*d)%q;
+        for(int i = 0 ; i < m ; i++){
+            t = (t*d + haystack[i])%q;
+            p = (p*d + needle[i])%q;
+        }
+        for(int i = 0 ; i < n ; i++){
+            if(t == p){
+                int j = 0;
+                for( ; j < m ; j++){
+                    if(haystack[i+j] != needle[j])
+                        break;
+                }
+                if(j == m)
+                    return i;
+            }
+            if(i < n-m){
+                t = (d*(t - haystack[i]*h) + haystack[i+m])%q;
+                if(t < 0)
+                    t += q;
+            }
+        }
+        return -1;
+    }
+};
