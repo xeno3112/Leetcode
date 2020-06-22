@@ -1,0 +1,18 @@
+Time: O(n), Space: O(n)
+
+class Solution {
+    int d = 1;
+public:
+    int height(TreeNode* root){
+        if(!root)
+            return 0;
+        int d1 = height(root->left);
+        int d2 = height(root->right);
+        d = max(d, 1 + d1 + d2);
+        return max(d1, d2) + 1;
+    }
+    int diameterOfBinaryTree(TreeNode* root) {
+        height(root);
+        return d-1;
+    }
+};
