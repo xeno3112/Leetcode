@@ -1,4 +1,23 @@
-Time: O(n), Space: O(n)
+Recusrsive Approach:-
+Time: O(n), Space: O(h)
+
+class Solution {
+    vector<int> res;
+public:
+    void pre(TreeNode* root){
+        if(!root)
+            return;
+        pre(root->left);
+        pre(root->right);
+        res.push_back(root->val);
+    }
+    vector<int> preorderTraversal(TreeNode* root) {
+        in(root);
+        return res;
+    }
+};
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Time: O(n), Space: O(h)
 
 class Solution {
 public:
