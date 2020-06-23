@@ -1,0 +1,52 @@
+Recursive Approach:-
+Time: O(n), Space: O(h)
+
+public:
+    Solution(){
+        ios_base::sync_with_stdio(0);
+        cin.tie(0);
+    }
+    bool check(TreeNode* root1, TreeNode* root2){
+        if(!root1 and !root2)
+            return true;
+        if(!root1 or !root2)
+            return false;
+        if(root1->val != root2->val)
+            return false;
+        return check(root1->left, root2->right) and check(root1->right, root2->left);
+    }
+    bool isSymmetric(TreeNode* root) {
+        if(!root or (!(root->left) and !(root->right)))
+            return true;
+        return check(root->left, root->right);
+    }
+};
+----------------------------------------------------------------------------------------------------------------------------------------------------
+Iterative Approach:-
+Time: O(n), Space: O(h)
+
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        queue<TreeNode*> q;
+        q.push(root);
+        q.push(root);
+        while (!q.empty()) {
+            TreeNode* t1 = q.front();
+            q.pop();
+            TreeNode* t2 = q.front();
+            q.pop();
+            if(!t1 and !t2) 
+                continue;
+            if(!t1 or !t2) 
+                return false;
+            if(t1->val != t2->val) 
+                return false;
+            q.push(t1->left);
+            q.push(t2->right);
+            q.push(t1->right);
+            q.push(t2->left);
+        }
+        return true;
+    }
+};
