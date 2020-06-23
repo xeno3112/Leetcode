@@ -1,0 +1,25 @@
+Time: O(n), Space: O(h)
+
+class Solution {
+    int res = INT_MIN;
+public:
+    Solution(){
+        ios_base::sync_with_stdio(0);
+        cin.tie(0);
+    }
+    int helper(TreeNode* root){
+        if(!root)
+            return 0;
+        int l = helper(root->left);
+        int r = helper(root->right);
+        int x = max(l, r);
+        int y = max(root->val, x + root->val);
+        int z = max(l+r+root->val, y);
+        res = max(res, z);
+        return y;
+    }
+    int maxPathSum(TreeNode* root) {
+        helper(root);
+        return res;
+    }
+};
