@@ -1,0 +1,25 @@
+Time: O(n), Space: O(1)
+
+class Solution {
+public:
+    Solution(){
+        ios_base::sync_with_stdio(0);
+        cin.tie(0);
+    }
+    Node* connect(Node* head){
+        if(!head)
+            return NULL;
+        Node* root = head;
+        while(root -> left){
+            Node *p = root;
+            while(p){
+                p -> left -> next = p -> right;
+                if(p -> next)
+                    p -> right -> next = p -> next -> left;
+                p = p -> next;
+            }
+            root = root -> left;
+        }
+        return head;
+    }
+};
