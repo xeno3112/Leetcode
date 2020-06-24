@@ -1,0 +1,29 @@
+Time: O(h+k)(for balanced BST)
+      O(n+k)(for unbalanced BST)
+Space: O(h) 
+
+
+class Solution {
+    int res;
+public:
+    Solution(){
+        ios_base::sync_with_stdio(0);
+        cin.tie(0);
+    }
+
+    int kthSmallest(TreeNode* root, int k) {
+        stack<TreeNode*> s;
+        while(1){
+            while(root){
+                s.push(root);
+                root = root->left;
+            }
+            root = s.top();
+            s.pop();
+            k--;
+            if(k == 0)
+                return root->val;
+            root = root->right;
+        }
+    }
+};
