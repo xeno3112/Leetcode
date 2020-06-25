@@ -1,0 +1,59 @@
+BFS approach:-
+Time: O(n), Space: O(n)
+
+class Solution {
+public:
+    bool check(int x, int y, int n, int m){
+        return ((x >= 0) and (y >= 0) and (x < n) and (y < m));
+    }
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor) {
+        if(image[sr][sc] == newColor)
+            return image;
+        int color = image[sr][sc];
+        int n = image.size();
+        int m = image[0].size();
+        queue<pair<int, int>> q;
+        q.push({sr, sc});
+        image[sr][sc] = newColor;
+        int row[4] = {-1, 0, 0, 1};
+        int col[4] = {0, -1, 1, 0};
+        while(!q.empty()){
+            auto temp = q.front();
+            q.pop();
+            for(int i = 0 ; i < 4 ; i++){
+                int x = row[i] + temp.first;
+                int y = col[i] + temp.second;
+                if(check(x, y, n, m) and image[x][y] == color){
+                    q.push({x, y});
+                    image[x][y] = newColor;
+                }
+            }
+        }
+        return image;
+    }
+};
+-----------------------------------------------------------------------------------------------------------------------------------
+DFS Approach:-
+Time: O(n), Space: O(n)
+
+class Solution {
+public:
+    void dfs(vector<vector<int>>& image, int sr, int sc, int color, int newColor){
+        if(image[sr][sc] == color){
+            image[sr][sc] = newColor;
+            if(sr > 0)
+                dfs(image, sr-1, sc, color, newColor);
+            if(sr < image.size()-1)
+                dfs(image, sr+1, sc, color, newColor);
+            if(sc > 0)
+                dfs(image, sr, sc-1, color, newColor);
+            if(sc < image[0].size()-1)
+                dfs(image, sr, sc+1, color, newColor);
+        }
+    }
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor) {
+        if(image[sr][sc] != newColor)
+            dfs(image, sr, sc, image[sr][sc], newColor);
+        return image;
+    }
+};
