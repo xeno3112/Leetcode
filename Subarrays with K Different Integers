@@ -1,0 +1,31 @@
+Time: O(n), Space: O(n)
+Algorithm:- (Number of subarrays with at most k distinct elements) - (Number of subarrays with at most k-1 distinct elements)
+
+class Solution {
+public:
+    int helper(vector<int>& A, int k){
+        if(k <= 0)
+            return 0;
+        int l = 0, r = 0, counter = 0;
+        unordered_map<int, int> m;
+        while(r < A.size()){
+            if(m.find(A[r]) == m.end())
+                m[A[r]];
+            m[A[r]]++;
+            while(m.size() > k){
+                m[A[l]]--;
+                if(m[A[l]] == 0)
+                    m.erase(A[l]);
+                l++;
+            }
+            counter += r-l+1;
+            r++;
+        }
+        return counter;
+    }
+    int subarraysWithKDistinct(vector<int>& A, int k) {
+        if(A.empty() or k <= 0)
+            return 0;
+        return helper(A, k) - helper(A, k-1);
+    }
+};
