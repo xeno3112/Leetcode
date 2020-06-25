@@ -1,0 +1,36 @@
+Time: O(n), Space: O(n)
+
+class Solution {
+public:
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<int> topo;
+        if(prerequisites.empty()){
+            for(int i = numCourses-1 ; i >= 0 ; i--)
+                topo.push_back(i);
+            return topo;
+        }
+        int n = prerequisites.size();
+        vector<int> adj[numCourses], in(numCourses);
+        for(int i = 0 ; i < n ; i++){
+            adj[prerequisites[i][1]].push_back(prerequisites[i][0]);
+            in[prerequisites[i][0]]++;
+        }
+        queue<int> q;
+        for(int i = 0 ; i < numCourses ; i++)
+            if(in[i] == 0)
+                q.push(i);
+        while(!q.empty()){
+            int temp = q.front();
+            q.pop();
+            topo.push_back(temp);
+            for(auto x : adj[temp]){
+                in[x]--;
+                if(in[x] == 0)
+                    q.push(x);
+            }
+        }
+        if(topo.size() == numCourses)
+            return topo;
+        return {};
+    }
+};
