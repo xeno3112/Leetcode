@@ -1,0 +1,45 @@
+DFS Approach:-
+Time: O(n), Space: O(n)
+
+class Solution {
+    unordered_map<Node*, Node*> m;
+public:
+    Node* cloneGraph(Node* node) {
+        if(!node)
+            return NULL;
+        if(m.find(node) == m.end()){
+            m[node] = new Node(node->val, {});
+            for(auto x : node->neighbors)
+                m[node]->neighbors.push_back(cloneGraph(x));
+        }
+        return m[node];
+    }
+};
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+BFS Approach:-
+Time: O(n), Space: O(n)
+
+class Solution {
+public:
+    Node* cloneGraph(Node* node) {
+        if(!node)
+            return NULL;
+        Node *root = new Node(node->val, {});
+        unordered_map<Node*, Node*> m;
+        m[node] = root;
+        queue<Node*> q;
+        q.push(node);
+        while(!q.empty()){
+            auto curr = q.front();
+            q.pop();
+            for(auto x : curr->neighbors){
+                if(m.find(x) == m.end()){
+                    m[x] = new Node(x->val, {});
+                    q.push(x);
+                }
+                m[curr]->neighbors.push_back(m[x]);
+            }
+        }
+        return root;
+    }
+};
