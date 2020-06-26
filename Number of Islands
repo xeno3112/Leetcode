@@ -1,0 +1,34 @@
+Time: O(n*m), Space: O(n*m)
+
+class Solution {
+    int row[4] = {-1, 0, 0, 1};
+    int col[4] = {0, -1, 1, 0};
+public:
+    inline bool check(int x, int y, int n, int m){
+        return ((x >= 0) and (y >= 0) and (x < n) and (y < m));
+    }
+    void dfs(vector<vector<char>>& grid, int x, int y, vector<vector<bool>> &vis){
+        vis[x][y] = true;
+        for(int k = 0 ; k < 4 ; k++){
+            int i = row[k]+x;
+            int j = col[k]+y;
+            if(check(i, j, grid.size(), grid[0].size()) and !vis[i][j] and grid[i][j] == '1')
+                dfs(grid, i, j, vis);
+        }
+    }
+    int numIslands(vector<vector<char>>& grid) {
+        if(grid.empty() or grid[0].empty())
+            return 0;
+        int n = grid.size(), m = grid[0].size(), islands = 0;
+        vector<vector<bool>> vis(n, vector<bool>(m));
+        for(int i = 0 ; i < n ; i++){
+            for(int j = 0 ; j < m ; j++){
+                if(!vis[i][j] and grid[i][j] == '1'){
+                    dfs(grid, i, j, vis);
+                    islands++;
+                }
+            }
+        }
+        return islands;
+    }
+};
