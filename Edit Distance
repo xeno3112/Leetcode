@@ -1,0 +1,50 @@
+Recursion + Memoization (Bottom-Up Approach):-
+Time: O(n*m), Space: O(n*m) + (recursive stack)
+
+class Solution {
+public:
+    int minop(string &s1, string &s2, int n, int m, vector<vector<int>> &dp){
+        
+        if(n == 0)      return dp[n][m] = m;
+        if(m == 0)      return dp[n][m] = n;
+        if(dp[n][m] != -1)      return dp[n][m];
+        
+        if(s1[n-1] == s2[m-1])
+            return dp[n][m] = minop(s1, s2, n-1, m-1, dp);
+        else
+            return dp[n][m] = min(minop(s1, s2, n-1, m-1, dp),min(minop(s1, s2, n-1, m, dp),
+                                        minop(s1, s2, n, m-1, dp))) + 1;
+    }
+    int minDistance(string word1, string word2) {
+        vector<vector<int>> dp(word1.size()+1, vector<int>(word2.size()+1, -1));
+        return minop(word1, word2, word1.size(), word2.size(), dp);
+    }
+};
+------------------------------------------------------------------------------------------------------------------------------------
+Top-Down Approach:-
+Time: O(n*m), Space: O(n*m)
+
+class Solution {
+public:
+    int minDistance(string word1, string word2) {
+        int n = word1.size(), m = word2.size();
+        if(n == 0)
+            return m;
+        if(m == 0)
+            return n;
+        vector<vector<int>> dp(n+1, vector<int>(m+1));
+        for(int i = 0 ; i <= n ; i++)
+            dp[i][0] = i;
+        for(int i = 0 ; i <= m ; i++)
+            dp[0][i] = i;
+        for(int i = 1 ; i <= n ; i++){
+            for(int j = 1 ; j <= m ; j++){
+                if(word1[i-1] == word2[j-1])
+                    dp[i][j] = dp[i-1][j-1];
+                else 
+                    dp[i][j] = 1+min(dp[i-1][j-1], min(dp[i-1][j], dp[i][j-1]));
+            }
+        }
+        return dp[n][m];
+    }
+};
